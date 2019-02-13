@@ -3,8 +3,9 @@
 #pragma once
 
 #include "Components/ActorComponent.h"
-#include "OpenDoor.generated.h"
+#include <string>
 
+#include "OpenDoor.generated.h"
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ESCAPEROOM_API UOpenDoor : public UActorComponent
@@ -21,6 +22,23 @@ public:
 	// Called every frame
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
-		
+private:
+	void OpenDoor();
+	void CloseDoor();
+
+	UPROPERTY(VisibleAnywhere)
+		float OpenAngle = 80.0f;
 	
+	UPROPERTY(EditAnywhere)
+		ATriggerVolume* PressurePlate;
+
+	const AActor* ActorThatOpens;
+
+	UPROPERTY(EditAnywhere)
+		float DoorCloseDelay = 1.f;
+
+	AActor* Owner;
+	float Opentime;
+
+	bool doorOpened;
 };
