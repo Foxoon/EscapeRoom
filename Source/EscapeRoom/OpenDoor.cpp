@@ -27,39 +27,19 @@ void UOpenDoor::BeginPlay()
 
 }
 
-void UOpenDoor::OpenDoor()
-{
-	//Set the door rotation
-	Owner->SetActorRotation(FRotator(0.f, OpenAngle, 0.f));
-}
-
-void UOpenDoor::CloseDoor(){
-	//Set the door rotation
-	Owner->SetActorRotation(FRotator(0.f, 180.f , 0.f));
-}
 
 // Called every frame
-void UOpenDoor::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
+void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
-	
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
 	//Poll the Triger Volume		
 	if (GetTotalMassOfActorsOnPlate() > 30.f){
 		UE_LOG(LogTemp, Log, TEXT("Open Door"));
-		OpenDoor();
-		doorOpened = true;
-		Opentime = GetWorld()->GetTimeSeconds();
+		OpenDoorRequest.Broadcast();
 	}
-	
-	if (doorOpened && (GetWorld()->GetTimeSeconds() - Opentime)  > DoorCloseDelay){
-		UE_LOG(LogTemp, Log, TEXT("Close Door"));
-		CloseDoor();
-		doorOpened = false;
-	}
+	//CloseDoorRequest.Broadcast();
 
-
-	
-	
 
 }
 
